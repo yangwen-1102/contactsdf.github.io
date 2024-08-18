@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="">
+  <meta name="keywords" content="Nerfies, D-NeRF, NeRF">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ContactSDF: Signed Distance Functions as Multi-Contact Models for Dexterous Manipulation</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    .emphasized-first-letter::first-letter {
+      font-family: 'Playfair Display', serif; /* Use your chosen swash font here */
+      font-size: 2em; /* Adjust size as needed */
+      font-weight: bold; /* Optional: makes the letter bold */
+      color: #000; /* Optional: change color if needed */
+      float: left; /* Optional: positions the letter to the left */
+      margin-right: 0.1em; /* Optional: space between the letter and the rest of the text */
+    }
+
+    .tab-font {
+      font-weight: bold;
+    }
+  </style>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+
+</head>
+<body>
+
+
+<!-- author and links section -->  
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">ContactSDF: Signed Distance Functions as Multi-Contact Models for Dexterous Manipulation</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://asu-iris.github.io/" target="_blank">Wen Yang, </a>&nbsp&nbsp</span>
+
+            <span class="author-block">
+              <a href="https://asu-iris.github.io/" target="_blank">Wanxin Jin</a></span>
+
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">Arizona State University</span>
+            <!-- <span class="author-block"><sup>2</sup>Northwestern University,&nbsp&nbsp</span>
+            <span class="author-block"><sup>3</sup>Yale University,&nbsp&nbsp</span><br>
+            <span class="author-block"><sup>4</sup>Purdue University,&nbsp&nbsp</span>
+            <span class="author-block"><sup>5</sup>University of Pennsylvania</span> -->
+          </div>
+
+          <div class="image-container">
+            <img src="./static/images/org_logo.png" alt="Image 1">
+          </div>
+          
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="https://asu-iris.github.io/" target="_blank"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Preprint</span>
+                </a>
+              </span>
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://asu-iris.github.io/" target="_blank"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code Repo</span>
+                </a>
+              </span>
+
+                <!-- Code Link. -->
+                <span class="link-block">
+                  <a href="https://asu-iris.github.io/" target="_blank"
+                      class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                        <i class="fab fa-youtube"></i>
+                    </span>
+                    <span>Video demo</span>
+                  </a>
+                </span>
+                            <!-- Code Link. -->
+              <!-- <span class="link-block">
+                <a href="https://github.com/wanxinjin/Safe-PDP" target="_blank"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code Repo 2</span>
+                </a>
+              </span> -->
+
+              <!-- Dataset Link. -->
+              <!-- <span class="link-block">
+                <a href="https://github.com/askforalfred/alfred"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="far fa-images"></i>
+                  </span>
+                  <span>Data</span>
+                </a> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+<!-- teaser section (very important) -->   
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+      <h2 class="subtitle has-text-centered">
+        <b>Overview:</b> 
+        we propose ContactSDF, a method that uses signed distance functions (SDFs) to approximate multi-contact models, including both collision detection and time-stepping routines.
+        ContactSDF achieves a closed-form state dynamics and end-to-end differentiability, enabling efficient model learning and optimization for contact-rich manipulation. 
+        <br><br>
+    
+        <!-- significant video or figure goes here -->    
+        <hr>
+        <br>
+        <figure>
+          <h2 class="title is-2">Long take uncut: <br> learning continuous reorientation from scratch on hardware using ContactSDF</h2>
+          <!-- <figcaption style="text-align: center; color: #888;">
+            Long take uncut video: Allegro hand learning dexterous manipulation from scratch on hardware
+            </figcaption> -->
+            <!-- <br> -->
+          <video id="teaser" muted loop playsinline controls style="width: 100%; max-width: 1000px; height: auto;">
+            <source src="./static/videos/hardware/hardware_learning_from_scratch.mp4"
+                    type="video/mp4">
+          </video>
+            <br>
+            <br>
+            <br>
+
+            <hr>
+            <br>
+            <h2 class="title is-2">Evaluation with learned ContactSDF-MPC (50Hz)</h2>
+            <div class="columns is-mobile is-vcentered">
+              <div class="column is-half" style="background-color: black; padding: 10px;">
+                <p style="text-align: center; color: white; font-size: 24px;"><b>Counterclockwise reorientation</b></p>
+                <video class="video"  
+                  autoplay controls muted loop playsinline 
+                  style="width: 450px; height: 300px; display: block; margin: 0 auto;" 
+                  src="./static/videos/hardware/hardware_ccw.mp4"> 
+                </video>
+              </div>
+              <div class="column is-half" style="background-color: black; padding: 10px;">
+                <p style="text-align: center; color: white; font-size: 24px;"><b>Clockwise reorientation</b></p>
+                <video class="video"  
+                  autoplay controls muted loop playsinline 
+                  style="width: 450px; height: 300px; display: block; margin: 0 auto;" 
+                  src="./static/videos/hardware/hardware_cw.mp4"> 
+                </video>
+              </div>
+            </div>
+          </figure>
+      </h2>
+  </div>
+
+</section>
+
+<!-- how-it-works section -->
+
+<section class="section">
+  <div class="container is-max-desktop">
+      <br>
+      <hr>
+      <br>
+      <h2 class="title is-2">How does ContactSDF work?</h2>
+      <div class="content text-align: left">
+        <br>
+        <!-- Figure -->
+        <figure>
+          <img src="./static/images/web_intro_fig.png" alt="Description of the image" style="max-width: 70%; height: auto;">
+          <figcaption class="has-text-centered"></figcaption>
+        </figure>
+        <p> ContactSDF has two key components: (1) SDF-based collision detection,
+          where robot and environment points query a geometric SDF that is constructed directly from the polytope representation of the object mesh or point cloud;  
+          and (2) SDF-based time-stepping prediction, where a velocity-space SDF is proposed to approximate the time-stepping of multi-contact dynamics based on the contact info obtained from the collision detection. 
+          With these two SDFs, the ContactSDF achieves a closed-form state dynamics and end-to-end differentiability (collision detection routine included).      
+        </p>
+      </div>
+    <!-- </div> -->
+       <!-- /Figure -->
+      <div style="text-align: center;">
+        <img src="./static/images/web_sdf_fig2.png" alt="Description of the image" style="max-width: 90%; height: auto;">
+        <!-- <figcaption class="has-text-centered">Captions</figcaption> -->
+      </div>
+      <br>
+      <hr>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Results header. -->
+    <h1 class="title is-2">More Simulation Results</h1>
+    <br>
+    <h3 class="title is-4" style="text-align: center;">Three-Ball Manipulation</h3>
+    <p>  In the three-ball manipulation task, the system includes three balls (red, green,
+      and blue), each of which has 3-DoF (moving XYZ directions)
+      and is actuated by a low-level position controller, and a 6-DoF
+      object laying on a frictional ground. The goal is that three balls
+      move the object from an initial pose to a desired on-ground
+      target pose.  
+    </p>
+    <br>
+
+
+    <!--/ Results header. -->
+    <div class="tabs is-toggle is-fullwidth is-centered">
+      <ul>
+        <li class="is-active"><a class="tab-font">Cube</a></li>
+        <li><a class="tab-font">Foambrick</a></li>
+        <li><a class="tab-font">Stick</a></li>
+      </ul>
+    </div>
+
+    <!-- Results videos. -->
+    <div class="columns is-vcentered has-text-centered is-full-width">
+      <!-- <div class="column">
+        <div class="publication-video">
+          <video class="interpolation-video tabs-balls" controls autoplay muted loop>
+            <source src="./static/videos/ball_cube/1.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+      </div> -->
+
+      <div class="column">
+        <div class="publication-video">
+          <video class="interpolation-video tabs-balls" controls autoplay muted loop>
+            <source src="./static/videos/ball_cube/2.mp4"
+                    type="video/mp4">
+          </video>
+          
+        </div>
+      </div>
+
+      <div class="column">
+        <div class="publication-video">
+          <video class="interpolation-video tabs-balls" controls autoplay muted loop>
+            <source src="./static/videos/ball_cube/3.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+      </div>
+
+      <div class="column">
+        <div class="publication-video">
+          <video class="interpolation-video tabs-balls" controls autoplay muted loop>
+            <source src="./static/videos/ball_cube/4.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <!-- Results header. -->
+    <h3 class="title is-4" style="text-align: center;">Allegro On-palm Manipulation</h3>
+    <p>  We also demonstrate the ContactSDF model on a Allegro hand for on-palm object reorientation. 
+      The system includes a 6-DoF object laying on the palm of the Allegro hand and the fingers are actuated by a low-level joint PD controller. 
+      The goal is to reorient the object (solid) from an initial pose to a desired target pose (transparent). Click the tabs to check the manipulation results for different objects.
+    </p>
+    <br>
+
+    <!--/ Results header. -->
+
+  <div class="tabs is-toggle is-fullwidth is-centered">
+    <ul>
+      <li class="is-active"><a class="tab-font">Cube</a></li>
+      <li><a class="tab-font">Foambrick</a></li>
+      <li><a class="tab-font">Stick</a></li>
+    </ul>
+  </div>
+
+  <!-- Results videos. -->
+  <div class="columns is-vcentered has-text-centered is-full-width">
+    <div class="column">
+      <div class="publication-video">
+        <video class="interpolation-video tabs-hands" controls autoplay muted loop>
+          <source src="./static/videos/hand_cube/1.mp4"
+                  type="video/mp4">
+        </video>
+        
+      </div>
+    </div>
+
+    <div class="column">
+      <div class="publication-video">
+        <video class="interpolation-video tabs-hands" controls autoplay muted loop>
+          <source src="./static/videos/hand_cube/2.mp4"
+                  type="video/mp4">
+        </video>
+      </div>
+    </div>
+
+    <div class="column">
+      <div class="publication-video">
+        <video class="interpolation-video tabs-hands" controls autoplay muted loop>
+          <source src="./static/videos/hand_cube/3.mp4"
+                  type="video/mp4">
+        </video>
+      </div>
+    </div>
+
+    <!-- <div class="column">
+      <div class="publication-video">
+        <video class="interpolation-video tabs-hands" controls autoplay muted loop>
+          <source src="./static/videos/hand_cube/4.mp4"
+                  type="video/mp4">
+        </video>
+      </div>
+    </div> -->
+
+
+  </div>
+  <!--/ Results videos. -->
+
+  </div>
+</section>
+
+
+<!-- Acknowledgements -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <br>
+    <hr>
+    <br>
+    <!-- Results header. -->
+    <h1 class="title is-2">Acknowledgements</h1>
+    <p>  
+      We would like to thank Zhixian Xie and Aravind Prakash Senthil for their
+      help with hardware experiments and discussions.
+    </p>
+  </div>
+</section>
+
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <br>
+    <hr>
+    <br>
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@article{TBD,
+  author    = {Yang, Wen and Jin, Wanxin},
+  title     = {ContactSDF: Signed Distance Functions as Multi-Contact Models for Dexterous Manipulation},
+  journal   = {tbd},
+  year      = {2024},
+}</code></pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is licensed under a <a rel="license"
+                                                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+          <p>
+            This website code is borrowed from <a href="https://nerfies.github.io">here</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
