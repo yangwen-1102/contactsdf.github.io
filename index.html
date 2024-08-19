@@ -160,7 +160,7 @@
       <h2 class="subtitle has-text-centered">
         <b>Overview:</b> 
         we propose ContactSDF, a method that uses signed distance functions (SDFs) to approximate multi-contact models, including both collision detection and time-stepping routines.
-        ContactSDF achieves a closed-form state dynamics and end-to-end differentiability, enabling efficient model learning and optimization for contact-rich manipulation. 
+        ContactSDF achieves a closed-form state prediction and end-to-end differentiability, enabling efficient model learning and optimization for contact-rich manipulation. 
         <br><br>
     
         <!-- significant video or figure goes here -->    
@@ -185,7 +185,7 @@
             <h2 class="title is-2">Evaluation with learned ContactSDF-MPC (50Hz)</h2>
             <div class="columns is-mobile is-vcentered">
               <div class="column is-half" style="background-color: black; padding: 10px;">
-                <p style="text-align: center; color: white; font-size: 24px;"><b>Counterclockwise reorientation</b></p>
+                <p style="text-align: center; color: white; font-size: 18px;"><b>Continuous counterclockwise reorientation</b></p>
                 <video class="video"  
                   autoplay controls muted loop playsinline 
                   style="width: 450px; height: 300px; display: block; margin: 0 auto;" 
@@ -193,7 +193,7 @@
                 </video>
               </div>
               <div class="column is-half" style="background-color: black; padding: 10px;">
-                <p style="text-align: center; color: white; font-size: 24px;"><b>Clockwise reorientation</b></p>
+                <p style="text-align: center; color: white; font-size: 18px;"><b>Continuous clockwise reorientation</b></p>
                 <video class="video"  
                   autoplay controls muted loop playsinline 
                   style="width: 450px; height: 300px; display: block; margin: 0 auto;" 
@@ -225,7 +225,7 @@
         <p> ContactSDF has two key components: (1) SDF-based collision detection,
           where robot and environment points query a geometric SDF that is constructed directly from the polytope representation of the object mesh or point cloud;  
           and (2) SDF-based time-stepping prediction, where a velocity-space SDF is proposed to approximate the time-stepping of multi-contact dynamics based on the contact info obtained from the collision detection. 
-          With these two SDFs, the ContactSDF achieves a closed-form state dynamics and end-to-end differentiability (collision detection routine included).      
+          With these two SDFs, the ContactSDF achieves a closed-form state prediction and end-to-end differentiability (collision detection routine included).      
         </p>
       </div>
     <!-- </div> -->
